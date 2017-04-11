@@ -1,19 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="50dc4a67-d106-4884-8b5c-0687aacfa5f1" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/MyTextEditor/com/company/TextEditor$1.class" afterPath="$PROJECT_DIR$/out/production/MyTextEditor/com/company/TextEditor$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/MyTextEditor/com/company/TextEditor$2.class" afterPath="$PROJECT_DIR$/out/production/MyTextEditor/com/company/TextEditor$2.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/MyTextEditor/com/company/TextEditor$3.class" afterPath="$PROJECT_DIR$/out/production/MyTextEditor/com/company/TextEditor$3.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/MyTextEditor/com/company/TextEditor$4.class" afterPath="$PROJECT_DIR$/out/production/MyTextEditor/com/company/TextEditor$4.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/MyTextEditor/com/company/TextEditor$5.class" afterPath="$PROJECT_DIR$/out/production/MyTextEditor/com/company/TextEditor$5.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/MyTextEditor/com/company/TextEditor$6.class" afterPath="$PROJECT_DIR$/out/production/MyTextEditor/com/company/TextEditor$6.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/MyTextEditor/com/company/TextEditor$7.class" afterPath="$PROJECT_DIR$/out/production/MyTextEditor/com/company/TextEditor$7.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/MyTextEditor/com/company/TextEditor$8.class" afterPath="$PROJECT_DIR$/out/production/MyTextEditor/com/company/TextEditor$8.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/MyTextEditor/com/company/TextEditor.class" afterPath="$PROJECT_DIR$/out/production/MyTextEditor/com/company/TextEditor.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/company/TextEditor.java" afterPath="$PROJECT_DIR$/src/com/company/TextEditor.java" />
-    </list>
+    <list default="true" id="50dc4a67-d106-4884-8b5c-0687aacfa5f1" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -44,8 +32,8 @@
       <file leaf-file-name="TextEditor.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/company/TextEditor.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="15" column="40" lean-forward="false" selection-start-line="15" selection-start-column="40" selection-end-line="15" selection-end-column="40" />
+            <state relative-caret-position="153">
+              <caret line="23" column="28" lean-forward="false" selection-start-line="23" selection-start-column="28" selection-end-line="23" selection-end-column="28" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#2514#2693#0" expanded="true" />
@@ -538,8 +526,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/company/TextEditor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="15" column="40" lean-forward="false" selection-start-line="15" selection-start-column="40" selection-end-line="15" selection-end-column="40" />
+        <state relative-caret-position="153">
+          <caret line="23" column="28" lean-forward="false" selection-start-line="23" selection-start-column="28" selection-end-line="23" selection-end-column="28" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#2514#2693#0" expanded="true" />
