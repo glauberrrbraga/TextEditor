@@ -3,13 +3,13 @@ package com.company;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.text.*;
 
 /*
-* Ideas:
-*   Toolbar separate from files, arguments modular
-*   Array of file objects
+* TODO: Handle multiple files
+* TODO: saveFileAs does not put filename in fileList
 * */
 
 
@@ -20,7 +20,9 @@ public class TextEditor extends JFrame {
     private String currentFile = "Untitled";
     private boolean changed = false;
 
-    JToolBar tool; // Toolbar
+    JToolBar tool;
+    ArrayList<String> fileList = new ArrayList<>();
+
 
     public TextEditor(){
         area.setFont(new Font("Monospaced",Font.PLAIN,12));
@@ -46,7 +48,6 @@ public class TextEditor extends JFrame {
         edit.getItem(1).setText("Copy");
         edit.getItem(2).setText("Paste");
 
-        //JToolBar tool = new JToolBar();
         tool = new JToolBar();
         add(tool,BorderLayout.NORTH);
 
@@ -126,8 +127,13 @@ public class TextEditor extends JFrame {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             // TODO: Open this file if not already open
+            if(currentFile != fileList.get(0)) {
+                saveOld();
+                currentFile = fileList.get(0);
+            }
             System.out.println(currentFile);
-
+            area.setText(null);
+            readInFile(currentFile);
         }
     };
 
@@ -138,16 +144,25 @@ public class TextEditor extends JFrame {
 
     // TODO: complete this
     private void newFile() {
-        if(changed) saveOld();
+        if(!saveOld()) return;
+        currentFile = "Untitled2";
 
-        Action FileThumbnail = new AbstractAction("text!", new ImageIcon("images/icons/file.gif")){
+        Action FileThumbnail = new AbstractAction(currentFile, new ImageIcon("images/icons/file.gif")){
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                // TODO: Open this file if not already open
-                System.out.println("Works!");
+                if(changed) saveOld();
+
+                currentFile = "Untitled2";
+                area.setText(null);
+                if(fileList.size() > 1) {
+                    System.out.println("Fetching contents..");
+                    readInFile(currentFile);
+                }
+                System.out.println(currentFile);
+
             }
         };
-        JButton newToolFile = tool.add(FileThumbnail);
+        tool.add(FileThumbnail);
 
     }
 
@@ -158,15 +173,21 @@ public class TextEditor extends JFrame {
             saveFile(dialog.getSelectedFile().getAbsolutePath());
     }
 
-    private void saveOld() {
+    private boolean saveOld() {
         if(changed) {
-            if(JOptionPane.showConfirmDialog(this, "Would you like to save "+ currentFile +" ?","Save",JOptionPane.YES_NO_OPTION)== JOptionPane.YES_OPTION)
+            if(JOptionPane.showConfirmDialog(this, "Would you like to save "+ currentFile +" ?","Save",JOptionPane.YES_NO_OPTION)== JOptionPane.YES_OPTION){
                 saveFile(currentFile);
+                fileList.add(currentFile);
+                return true;
+            }
         }
+        return false;
     }
 
     private void readInFile(String fileName) {
         try {
+            System.out.println("reading: " + fileName);
+
             FileReader r = new FileReader(fileName);
             area.read(r,null);
             r.close();
