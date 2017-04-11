@@ -12,7 +12,6 @@ import javax.swing.text.*;
 * TODO: saveFileAs does not put filename in fileList
 * */
 
-
 public class TextEditor extends JFrame {
 
     private JTextArea area = new JTextArea(20,120);
