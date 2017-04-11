@@ -6,4 +6,5 @@ Opening a new file and saving it is not in line with hard-save and saveas - Need
 
 Opening multiple new files doesn't work yet - Needs refactoring
 
+Save files should be moved to a folder and not base directory 
 
