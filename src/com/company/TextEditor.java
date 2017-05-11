@@ -5,7 +5,6 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -27,7 +26,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JToolBar;
-import javax.swing.KeyStroke;
 import javax.swing.text.DefaultEditorKit;
 
 /*
@@ -45,11 +43,10 @@ public class TextEditor extends JFrame implements ActionListener {
 	private boolean changed = false;
 
 	ArrayList<String> fileList = new ArrayList<>();
-//	CareTaker caretakerRedo;
 	CareTaker caretaker = new CareTaker();
-//	CareTaker caratakerRedo = new CareTaker();
-//	Originator originatorRedo;
 	Originator originator;
+	Estados estado;
+	JButton undo;
 
 	public TextEditor() {
 		area.setFont(new Font("Monospaced", Font.PLAIN, 12));
@@ -77,56 +74,47 @@ public class TextEditor extends JFrame implements ActionListener {
 		edit.add(Cut);
 		edit.add(Copy);
 		edit.add(Paste);
-		edit.add(Redo);
 		edit.add(Undo);
 
 		edit.getItem(0).setText("Cut out");
 		edit.getItem(1).setText("Copy");
 		edit.getItem(2).setText("Paste");
-		edit.getItem(3).setText("Redo");
-		edit.getItem(4).setText("Undo");
+		edit.getItem(3).setText("Undo");
 
 		tool = new JToolBar();
 		add(tool, BorderLayout.NORTH);
 
 		JButton newB = tool.add(New), openB = tool.add(Open), saveB = tool.add(Save);
 		newB.setToolTipText("New");
-		newB.setText("New");
+		newB.setText(null);
 		openB.setToolTipText("Open");
-		openB.setText("Open");
+		openB.setText(null);
 		saveB.setToolTipText("Save");
-		saveB.setText("Save");
+		saveB.setText(null);
 		tool.addSeparator();
 
-		JButton cut = tool.add(Cut), cop = tool.add(Copy), pas = tool
-				.add(Paste)/* , red = tool.add(Redo), und = tool.add(Undo) */;
+		JButton cut = tool.add(Cut), cop = tool.add(Copy), pas = tool.add(Paste);
 
-		JButton undo = new JButton(Undo);
-		JButton redo = new JButton(Redo);
+		undo = new JButton(Undo);
 		tool.add(undo);
-		tool.add(redo);
 
-		cut.setText("Cut");
+		cut.setText(null);
 		cut.setIcon(new ImageIcon("images/icons/cut.gif"));
 		cut.setToolTipText("Cut");
-		cop.setText("Copy");
+		cop.setText(null);
 		cop.setIcon(new ImageIcon("images/icons/copy.gif"));
 		cop.setToolTipText("Copy");
-		pas.setText("Paste");
+		pas.setText(null);
 		pas.setIcon(new ImageIcon("images/icons/paste.gif"));
 		pas.setToolTipText("Paste");
 		undo.setText("Undo");
 		undo.setToolTipText("Undo");
 		undo.setIcon(new ImageIcon("images/icons/undo.png"));
-		redo.setText("Redo");
-		redo.setToolTipText("Redo");
-		redo.setIcon(new ImageIcon("images/icons/redo.gif"));
 
 		tool.addSeparator();
 
 		Save.setEnabled(false);
-		Undo.setEnabled(false);
-		Redo.setEnabled(false);
+		undo.setEnabled(false);
 		SaveAs.setEnabled(false);
 
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -135,33 +123,40 @@ public class TextEditor extends JFrame implements ActionListener {
 		setTitle(currentFile);
 		setVisible(true);
 
-		//originatorRedo = new Originator();
-
 		originator = new Originator();
-		originator.set(area);		
+		originator.set(area);
 		caretaker.addMemento(originator.storeInMemento());
+		
+		estado = new Vazio();
+
 
 		area.addKeyListener(new KeyListener() {
 
 			@Override
-			public void keyPressed(KeyEvent arg0) {
+			public void keyPressed(KeyEvent e) {
+
+				// colocar aqui os if's dos strategy!!!!!!!!!!!!!!!!!
+				if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_Z) {
+					Undo();
+				}
+				if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_S) {
+					saveFileAs();
+				}
 			}
 
 			@Override
-			public void keyReleased(KeyEvent arg0) {
+			public void keyReleased(KeyEvent e) {
 			}
 
 			@Override
-			public void keyTyped(KeyEvent arg0) {
-				if (((KeyEvent) arg0).getModifiers() != KeyEvent.CTRL_MASK
-						&& ((KeyEvent) arg0).getModifiers() != KeyEvent.ALT_MASK) {
+			public void keyTyped(KeyEvent e) {
+				if (!e.isControlDown()) {
 					originator = new Originator();
 					originator.set(area);
 					caretaker.addMemento(originator.storeInMemento());
-					undo.setEnabled(true);
-					//System.out.println("Tamanho do ArrayList: " + caretaker.getSize());
-
+					estado = new NaoVazio();
 				}
+				estado.estadoDesfazer(undo);
 			}
 
 		});
@@ -196,6 +191,7 @@ public class TextEditor extends JFrame implements ActionListener {
 			else
 				saveFileAs();
 		}
+
 	};
 
 	Action SaveAs = new AbstractAction("Save as...") {
@@ -218,34 +214,10 @@ public class TextEditor extends JFrame implements ActionListener {
 			newFile();
 		}
 	};
-	Action Redo = new AbstractAction("Redo") {
-		public void actionPerformed(ActionEvent actionEvent) {
-		
-		}
-	};
+
 	Action Undo = new AbstractAction("Undo") {
 		public void actionPerformed(ActionEvent actionEvent) {
-			try {
-				if (caretaker.getSize() > 0) {
-
-					area.setText(originator.restoreFromMemento(caretaker.getMemento(caretaker.getSize() - 1)).getText());
-					caretaker.savedArticles.remove(caretaker.getSize() - 1);
-					
-					
-//					originatorRedo = new Originator();
-//					caratakerRedo.addMemento(originatorRedo.storeInMemento());
-//					originatorRedo.set(originator.restoreFromMemento(caretaker.getMemento(caretaker.getSize() - 1)));					
-//					caretakerRedo.addMemento(originatorRedo.storeInMemento());					
-					
-
-				} else if(caretaker.getSize() == 0){
-					
-					Undo.setEnabled(false);
-				
-				}
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
-			}
+			Undo();
 		}
 
 	};
@@ -270,10 +242,6 @@ public class TextEditor extends JFrame implements ActionListener {
 	Action Cut = m.get(DefaultEditorKit.cutAction);
 	Action Copy = m.get(DefaultEditorKit.copyAction);
 	Action Paste = m.get(DefaultEditorKit.pasteAction);
-
-	private void Actions() {
-
-	}
 
 	// TODO: complete this
 	private void newFile() {
@@ -320,7 +288,7 @@ public class TextEditor extends JFrame implements ActionListener {
 
 	private void readInFile(String fileName) {
 		try {
-			System.out.println("reading: " + fileName);
+			// System.out.println("reading: " + fileName);
 
 			FileReader r = new FileReader(fileName);
 			area.read(r, null);
@@ -334,11 +302,38 @@ public class TextEditor extends JFrame implements ActionListener {
 		}
 	}
 
+	private void Undo() {
+		try {
+			if (caretaker.getSize() > 0) {
+
+				area.setText(originator.restoreFromMemento(caretaker.getMemento(caretaker.getSize() - 1)).getText());
+
+				caretaker.savedArticles.remove(caretaker.getSize() - 1);
+
+			}
+			if (caretaker.getSize() == 0) {
+				
+				estado = new Vazio();
+
+			}
+			if (caretaker.getSize() > 0){
+				estado = new NaoVazio();
+			}
+			
+			estado.estadoDesfazer(undo);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			estado = new Vazio();
+			estado.estadoDesfazer(undo);
+		}
+
+	}
+
 	private void saveFile(String fileName) {
 		try {
 			FileWriter w = new FileWriter(fileName);
 			area.write(w);
-			System.out.println("To aqui?");
+
 			w.close();
 			currentFile = fileName;
 			setTitle(currentFile);
