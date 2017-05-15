@@ -135,7 +135,6 @@ public class TextEditor extends JFrame implements ActionListener {
 			@Override
 			public void keyPressed(KeyEvent e) {
 
-				// colocar aqui os if's dos strategy!!!!!!!!!!!!!!!!!
 				if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_Z) {
 					Undo();
 				}
